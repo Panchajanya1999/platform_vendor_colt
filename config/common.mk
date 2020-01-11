@@ -108,7 +108,6 @@ PRODUCT_PACKAGES += \
     PixelThemesStub2019 \
     FontGoogleSansOverlay \
     OmniStyle \
-    Snap \
     Lawnchair \
     Longshot \
     WallpaperPicker2 \
