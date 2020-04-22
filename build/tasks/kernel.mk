@@ -33,6 +33,10 @@
 #   TARGET_KERNEL_NEW_CLANG_COMPILE    = Compile kernel with clang-11, defaults to false
 #											Use this with TARGET_KERNEL_CLANG_COMPILE enabled
 #
+#	TARGET_KERNEL_GCC_WITH_RELR		   = Build with RELR Relocation while on GCC. This requires clang-11 or llvm.
+#											Defaults to false.
+#
+#	TARGET_KERNEL_GCC_WITH_LLD		   = Use LLD Linker with GCC. Defaults to false
 #
 #   TARGET_KERNEL_CLANG_PATH           = Clang prebuilts path, optional
 #
@@ -210,6 +214,17 @@ ifeq ($(TARGET_KERNEL_NEW_CLANG_COMPILE),true)
 	KERNEL_CC += OBJCOPY=llvm-objcopy
 	KERNEL_CC += OBJDUMP=llvm-objdump
 	KERNEL_CC += STRIP=llvm-STRIP
+endif
+
+# Append for RELR to work
+ifeq ($(TARGET_KERNEL_GCC_WITH_RELR),true)
+	KERNEL_CROSS_COMPILE += NM=llvm-nm
+	KERNEL_CROSS_COMPILE += OBJCOPY=llvm-objcopy
+endif
+
+# Append for LLD Linker with GCC
+ifeq ($(TARGET_KERNEL_GCC_WITH_LLD),y)
+	KERNEL_CROSS_COMPILE += LD=ld.lld
 endif
 
 KERNEL_ADDITIONAL_CONFIG_OUT := $(KERNEL_OUT)/.additional_config
