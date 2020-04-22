@@ -203,6 +203,11 @@ PATH_OVERRIDE += PATH=$(KERNEL_TOOLCHAIN_PATH_gcc)/bin:$$PATH
 # System tools are no longer allowed on 10+
 PATH_OVERRIDE += $(TOOLS_PATH_OVERRIDE)
 
+# Append for RELR to work
+KERNEL_CROSS_COMPILE += NM=llvm-nm
+KERNEL_CROSS_COMPILE += OBJCOPY=llvm-objcopy
+KERNEL_CROSS_COMPILE += LD=ld.lld
+
 KERNEL_ADDITIONAL_CONFIG_OUT := $(KERNEL_OUT)/.additional_config
 
 # Internal implementation of make-kernel-target
