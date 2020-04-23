@@ -28,6 +28,9 @@
 #                                                      x86_64-linux-android- for x86
 #
 #   TARGET_KERNEL_CLANG_COMPILE        = Compile kernel with clang, defaults to false
+#	
+#   TARGET_KERNEL_NEW_CLANG_COMPILE    = Compile kernel with clang-11, defaults to false
+#										  Use this with TARGET_KERNEL_CLANG_COMPILE enabled
 #
 #   KERNEL_TOOLCHAIN_PREFIX            = Overrides TARGET_KERNEL_CROSS_COMPILE_PREFIX,
 #                                          Set this var in shell to override
@@ -126,8 +129,12 @@ ifneq ($(TARGET_KERNEL_ADDITIONAL_FLAGS),)
 endif
 
 TOOLS_PATH_OVERRIDE += \
+ifeq ($(TARGET_KERNEL_NEW_CLANG_COMPILE),true)
+	PATH=$(BUILD_TOP)/prebuilts/clang/host/linux-x86/clang-11/bin:$(BUILD_TOP)/prebuilts/tools-lineage/$(HOST_OS)-x86/bin:$$PATH \
+else
     PATH=$(BUILD_TOP)/prebuilts/tools-lineage/$(HOST_OS)-x86/bin:$$PATH \
     LD_LIBRARY_PATH=$(BUILD_TOP)/prebuilts/tools-lineage/$(HOST_OS)-x86/lib:$$LD_LIBRARY_PATH \
+endif
     PERL5LIB=$(BUILD_TOP)/prebuilts/tools-lineage/common/perl-base
 
 # Set DTBO image locations so the build system knows to build them
