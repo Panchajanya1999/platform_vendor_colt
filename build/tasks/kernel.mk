@@ -29,6 +29,10 @@
 #   TARGET_KERNEL_CLANG_COMPILE        = Compile kernel with clang, defaults to false
 #
 #   TARGET_KERNEL_CLANG_VERSION        = Clang prebuilts version, optional, defaults to clang-stable
+#	
+#   TARGET_KERNEL_NEW_CLANG_COMPILE    = Compile kernel with clang-11, defaults to false
+#											Use this with TARGET_KERNEL_CLANG_COMPILE enabled
+#
 #
 #   TARGET_KERNEL_CLANG_PATH           = Clang prebuilts path, optional
 #
@@ -198,6 +202,15 @@ PATH_OVERRIDE += PATH=$(KERNEL_TOOLCHAIN_PATH_gcc)/bin:$$PATH
 
 # System tools are no longer allowed on 10+
 PATH_OVERRIDE += $(TOOLS_PATH_OVERRIDE)
+
+# Set environment variables for clang-11. We do not need CLANG_TRIPLE
+ifeq ($(TARGET_KERNEL_NEW_CLANG_COMPILE),true)
+	KERNEL_CC += AR=llvm-ar
+	KERNEL_CC += NM=llvm-nm
+	KERNEL_CC += OBJCOPY=llvm-objcopy
+	KERNEL_CC += OBJDUMP=llvm-objdump
+	KERNEL_CC += STRIP=llvm-STRIP
+endif
 
 KERNEL_ADDITIONAL_CONFIG_OUT := $(KERNEL_OUT)/.additional_config
 
